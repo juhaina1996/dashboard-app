@@ -8,6 +8,11 @@
   border-radius: 10px;
   margin-left: 15%;
 }
+@media screen and (max-width: 992px) {
+  .table-container {
+    width: 90%;
+  }
+}
 .registered-user-text {
   font-size: 21px;
   font-weight: 400;
@@ -27,4 +32,9 @@
   display: flex;
   justify-content: flex-end;
   margin-right: 20px;
+}
+@media screen and (max-width: 992px) {
+  .main-container {
+    padding: 17px 9px;
+  }
 }

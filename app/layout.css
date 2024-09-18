@@ -116,3 +116,15 @@ main {
   border-radius: 5px;
   width: 150px;
 }
+@media screen and (max-width: 992px) {
+  .sidebar {
+    width: 100px;
+  }
+  .sidebar ul li a {
+    font-size: 12px;
+  }
+  .active-link {
+    width: 63px;
+    padding: 0px 13px;
+  }
+}

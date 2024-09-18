@@ -7,6 +7,12 @@
   color: #fff;
   cursor: pointer;
 }
+@media screen and (max-width: 992px) {
+  .button {
+    padding: 10px 10px;
+    font-size: 12px;
+  }
+}
 .button:hover {
   color: #a1e6f6;
 }

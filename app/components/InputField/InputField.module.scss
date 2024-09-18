@@ -14,3 +14,8 @@
   margin-bottom: 17px;
   width: 60%;
 }
+@media screen and (max-width: 992px) {
+  .input {
+    width: 90%;
+  }
+}

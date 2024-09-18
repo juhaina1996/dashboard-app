@@ -7,6 +7,11 @@
   color: #fff;
   border-radius: 10px;
 }
+@media screen and (max-width: 992px) {
+  .table-container {
+    width: 90%;
+  }
+}
 .registered-user-text {
   font-size: 21px;
   font-weight: 400;

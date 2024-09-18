@@ -25,7 +25,11 @@
   margin-top: 50px;
   animation: fadeIn 2s ease-in-out forwards;
 }
-
+@media screen and (max-width: 992px) {
+  .welcome-back {
+    font-size: 16px;
+  }
+}
 @keyframes fadeIn {
   from {
     opacity: 0;

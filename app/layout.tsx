@@ -1,6 +1,6 @@
 "use client";
-import { ReactNode } from "react";
 
+import { ReactNode } from "react";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -17,48 +17,50 @@ const roboto = Roboto({
   subsets: ["latin"],
 });
 
-// Define the Layout component as a functional component
 const Layout = ({ children }: { children: ReactNode }) => {
-  const router = useRouter(); // Hook to access the router object
-  const pathname = usePathname(); // Hook to get the current pathname
-  const { isAuthenticated: serverAuthenticated } = useClientAuth(); // Get authentication status from custom hook
-  const [isAuthenticated, setIsAuthenticated] =
-    useState<boolean>(serverAuthenticated); // Local state to track authentication status
-  const [isAdmin, setIsAdmin] = useState<boolean>(false); // Local state to track if the user is an admin
+  const router = useRouter();
+  const pathname = usePathname();
+  const { isAuthenticated: serverAuthenticated } = useClientAuth();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(
+    serverAuthenticated
+  );
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   useEffect(() => {
-    // Effect to check user role after authentication status changes
     const checkUserRole = async () => {
       if (serverAuthenticated) {
         const user = auth.currentUser;
         if (user) {
-          // Fetch user document from Firestore to check the role
           const userDoc = await getDoc(doc(db, "users", user.uid));
           if (userDoc.exists()) {
-            setIsAdmin(userDoc.data().role === "admin"); // Set admin status based on role
+            setIsAdmin(userDoc.data().role === "admin");
           }
         }
       }
-      setIsAuthenticated(serverAuthenticated); // Update local authentication state
+      setIsAuthenticated(serverAuthenticated);
     };
 
-    checkUserRole(); // Call the function to check user role
-  }, [serverAuthenticated]); // Dependency array ensures effect runs when serverAuthenticated changes
+    checkUserRole();
+  }, [serverAuthenticated]);
 
   const handleLogout = async () => {
     try {
-      await signOut(auth); // Sign out the user
-      router.push("/"); // Redirect to home page after logout
+      await signOut(auth);
+      router.push("/");
     } catch (error) {
-      console.error("Logout error:", error); // Log any errors that occur during logout
+      console.error("Logout error:", error);
     }
   };
+
+  if (isAuthenticated === null) {
+    // Render a loading state while determining authentication
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={roboto.className}>
       <header className="header">
         <div className="header-buttons">
-          {/* Render login/register buttons if not authenticated */}
           {!isAuthenticated ? (
             <>
               <Link href="/registration" className="header-button">
@@ -69,7 +71,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
               </Link>
             </>
           ) : (
-            // Render logout button if authenticated
             <button className="header-button" onClick={handleLogout}>
               Logout
             </button>
@@ -78,7 +79,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
       </header>
 
       <div className="layout">
-        {/* Render sidebar if authenticated */}
         {isAuthenticated && (
           <aside className="sidebar">
             <nav>
@@ -101,7 +101,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
                     Calculation
                   </Link>
                 </li>
-                {/* Render admin-specific links if user is an admin */}
                 {isAdmin && (
                   <>
                     <li>
@@ -137,7 +136,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
       <body>
@@ -145,4 +144,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

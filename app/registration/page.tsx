@@ -22,11 +22,6 @@ const RegistrationPage: React.FC = () => {
   // Hook to programmatically navigate
   const router = useRouter();
 
-  // Effect to log email and password changes (for debugging purposes)
-  useEffect(() => {
-    console.log("Email:", email, "Password:", password);
-  }, [email, password]);
-
   // Function to handle user registration
   const handleRegister = async () => {
     try {
