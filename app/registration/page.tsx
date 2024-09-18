@@ -41,7 +41,7 @@ const RegistrationPage: React.FC = () => {
       // Save additional user details to Firestore
       await setDoc(doc(db, "users", user.uid), {
         email: user.email,
-        role: "", // Default role for new users
+        role: "admin", // Default role for new users
       });
 
       setMessage("User registered successfully");
