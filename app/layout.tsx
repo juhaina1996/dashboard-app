@@ -1,4 +1,5 @@
 "use client";
+import { ReactNode } from "react";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -17,7 +18,7 @@ const roboto = Roboto({
 });
 
 // Define the Layout component as a functional component
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const Layout = ({ children }: { children: ReactNode }) => {
   const router = useRouter(); // Hook to access the router object
   const pathname = usePathname(); // Hook to get the current pathname
   const { isAuthenticated: serverAuthenticated } = useClientAuth(); // Get authentication status from custom hook
@@ -136,4 +137,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-export default Layout;
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <Layout>{children}</Layout>
+      </body>
+    </html>
+  );
+}
