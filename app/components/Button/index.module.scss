@@ -1,0 +1,22 @@
+.button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 2px solid rgb(111, 111, 111, 0.3);
+  background: linear-gradient(180deg, #212c3d 0%, #101d2e 100%);
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+}
+.button:hover {
+  color: #a1e6f6;
+}
+.outline {
+  background-color: transparent;
+  border: 2px solid rgb(111, 111, 111, 0.3);
+  color: #fff;
+}
+
+.filled {
+  border: 2px solid rgb(111, 111, 111, 0.3);
+  background: linear-gradient(180deg, #212c3d 0%, #101d2e 100%);
+}

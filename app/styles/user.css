@@ -1,0 +1,21 @@
+.table-container {
+  background: linear-gradient(180deg, #212c3d 0%, #101d2e 100%);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 121.5%; /* 15.795px */
+  width: 60%;
+  color: #fff;
+  border-radius: 10px;
+}
+.registered-user-text {
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 121.5%; /* 15.795px */
+  padding-bottom: 10px;
+  padding: 15px;
+  border-bottom: 2px solid #02aab0;
+}
+.list {
+  border-bottom: 2px solid #344258;
+  padding: 9px 15px;
+}
