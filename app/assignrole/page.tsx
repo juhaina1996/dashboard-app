@@ -2,13 +2,25 @@
 
 import React, { useEffect, useState } from "react";
 import { db } from "../../firebaseConfig";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  DocumentData,
+} from "firebase/firestore";
 import "../styles/assignrole.css";
 
+// Define a type for User data
+interface User extends DocumentData {
+  id: string;
+  email: string;
+  role: string;
+}
+
 const AssignRole: React.FC = () => {
-  const [users, setUsers] = useState<any[]>([]); // State to store list of users
-  const [currentUser, setCurrentUser] = useState<any>(null); // State to store the currently authenticated user
+  const [users, setUsers] = useState<User[]>([]); // State to store list of users
 
   // Function to fetch users from Firestore
   const fetchUsers = async () => {
@@ -20,10 +32,13 @@ const AssignRole: React.FC = () => {
       const userSnapshot = await getDocs(userCollection);
 
       // Map over documents and extract data along with document IDs
-      const userList = userSnapshot.docs.map((doc) => ({
-        id: doc.id, // Document ID
-        ...doc.data(), // Document data
-      }));
+      const userList: User[] = userSnapshot.docs.map((doc) => {
+        const data = doc.data() as Omit<User, "id">; // Get the user data excluding 'id'
+        return {
+          id: doc.id, // Document ID
+          ...data, // Spread data to include all properties of User
+        } as User;
+      });
 
       // Update state with the fetched users
       setUsers(userList);
@@ -36,15 +51,7 @@ const AssignRole: React.FC = () => {
   useEffect(() => {
     fetchUsers(); // Fetch users when the component mounts
 
-    // Set up an authentication state listener
-    const unsubscribe = onAuthStateChanged(getAuth(), (user) => {
-      if (user) {
-        setCurrentUser(user); // Update currentUser state when a user is authenticated
-      }
-    });
-
     // Cleanup function to unsubscribe from authentication listener
-    return () => unsubscribe();
   }, []);
 
   // Function to handle role assignment

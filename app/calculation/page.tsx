@@ -3,10 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Button from "../components/Button";
 import InputField from "../components/InputField/InputField";
-import "../styles/calculate.css"; // Import CSS for styling
-import { auth, db } from "../../firebaseConfig"; // Import Firebase configuration
-import useClientAuth from "../hooks/useClientAuth"; // Custom hook for client authentication
-import { getDoc, doc } from "firebase/firestore"; // Import Firestore functions
+import "../styles/calculate.css";
 
 const CalculationPage: React.FC = () => {
   // State variables
@@ -19,20 +16,6 @@ const CalculationPage: React.FC = () => {
     amount: "", // Error message for amount input
     term: "", // Error message for term input
   });
-
-  // Retrieve authentication status from custom hook
-  const { isAuthenticated: serverAuthenticated } = useClientAuth();
-  const [isAuthenticated, setIsAuthenticated] =
-    useState<boolean>(serverAuthenticated);
-
-  // Effect to update authentication status
-  useEffect(() => {
-    const checkUserRole = async () => {
-      setIsAuthenticated(serverAuthenticated);
-    };
-
-    checkUserRole();
-  }, [serverAuthenticated]);
 
   // Fetch interest rate from API when component mounts
   useEffect(() => {

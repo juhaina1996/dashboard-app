@@ -9,7 +9,7 @@ const HomePage: React.FC = () => {
   const { isAuthenticated } = useClientAuth();
 
   return (
-    <Layout isLoggedIn={isAuthenticated}>
+    <Layout>
       {" "}
       {/* Pass the isLoggedIn prop here */}
       {isAuthenticated ? (

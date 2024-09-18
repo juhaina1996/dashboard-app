@@ -8,6 +8,7 @@ import InputField from "../components/InputField/InputField";
 import Button from "../components/Button/index";
 import { useRouter } from "next/navigation"; // Import useRouter hook from Next.js
 import "../styles/register.css";
+import { FirebaseError } from "firebase/app"; // Import FirebaseError for more specific error handling
 
 const RegistrationPage: React.FC = () => {
   // State to manage email input
@@ -50,9 +51,14 @@ const RegistrationPage: React.FC = () => {
       // Clear input fields
       setEmail("");
       setPassword("");
-    } catch (error: any) {
-      // Set error message if registration fails
-      setError(error.message);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        // Set error message if registration fails
+        setError(error.message);
+      } else {
+        // Handle unexpected errors
+        setError("An unexpected error occurred.");
+      }
     }
   };
 

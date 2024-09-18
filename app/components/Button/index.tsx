@@ -2,12 +2,11 @@ import React from "react";
 import styles from "./index.module.scss";
 import cx from "classnames";
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   outline?: boolean; // Make outline optional
   children: React.ReactNode;
   customStyling?: string; // Make customStyling optional
   ariaLabel?: string; // New prop for ARIA label
-  [x: string]: any; // Allow any other props
 }
 
 const Button: React.FC<ButtonProps> = ({

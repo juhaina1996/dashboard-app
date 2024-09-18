@@ -7,6 +7,7 @@ import { auth } from "../../firebaseConfig"; // Import Firebase auth
 import InputField from "../components/InputField/InputField";
 import Button from "../components/Button/index";
 import "../styles/login.css";
+import { FirebaseError } from "firebase/app"; // Import FirebaseError for more specific error handling
 
 const LoginPage: React.FC = () => {
   // State to manage email input
@@ -29,9 +30,14 @@ const LoginPage: React.FC = () => {
       setMessage("Login successful! Redirecting...");
       // Redirect to the home page upon successful login
       router.push("/");
-    } catch (error: any) {
-      // Set error message if login fails
-      setError(error.message);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        // Set error message if login fails
+        setError(error.message);
+      } else {
+        // Handle unexpected errors
+        setError("An unexpected error occurred.");
+      }
     }
   };
 

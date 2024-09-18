@@ -2,10 +2,17 @@
 
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../useAuth"; // Custom hook for authentication
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, QueryDocumentSnapshot } from "firebase/firestore";
 import { db } from "../../firebaseConfig"; // Firebase configuration
 import "../styles/user.css";
 import { Roboto } from "next/font/google";
+
+// Define a type for user data
+interface User {
+  id: string;
+  email: string;
+  role?: string; // Optional role field
+}
 
 // Importing Roboto font
 const roboto = Roboto({
@@ -17,7 +24,7 @@ const UsersPage: React.FC = () => {
   // Access the authenticated user from custom hook
   const { user } = useAuth();
   // State to manage list of users
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   // State to manage loading state
   const [loading, setLoading] = useState(true);
   // State to manage error messages
@@ -30,13 +37,25 @@ const UsersPage: React.FC = () => {
         try {
           const userCollection = collection(db, "users");
           const userSnapshot = await getDocs(userCollection);
-          const userList = userSnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
+          const userList: User[] = userSnapshot.docs.map(
+            (doc: QueryDocumentSnapshot) => {
+              const data = doc.data() as User;
+              // Ensure 'id' is not duplicated in the user object
+              return {
+                id: doc.id,
+                email: data.email,
+                role: data.role,
+              };
+            }
+          );
           setUsers(userList); // Update state with fetched users
-        } catch (err: any) {
-          setError("Failed to fetch users."); // Set error message if fetching fails
+        } catch (err: unknown) {
+          // Use 'unknown' and type assertion to handle different error types
+          if (err instanceof Error) {
+            setError(err.message); // Set error message if fetching fails
+          } else {
+            setError("Failed to fetch users."); // Handle unexpected errors
+          }
         } finally {
           setLoading(false); // Set loading to false after data fetching
         }
@@ -68,7 +87,6 @@ const UsersPage: React.FC = () => {
               <div key={user.id} className="list">
                 <p>Email: {user.email}</p> {/* Display user email */}
                 <p>Role: {user.role ? user.role : "Not Assigned"}</p>{" "}
-                {/* Display user role or default message */}
               </div>
             ))}
           </div>
